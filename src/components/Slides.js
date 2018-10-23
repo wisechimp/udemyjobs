@@ -6,11 +6,15 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class Slides extends Component {
   renderLastSlide(index) {
-    console.log(index.length);
     if (index === this.props.slideData.length - 1) {
       return (
         <Button
           title="Onwards!"
+          raised
+          buttonStyle={styles.buttonStyle}
+          //We don't enter the () after onComplete because although it's
+          //functional it would run as soon as the button was rendered!
+          onPress={this.props.onSlidesComplete}
         />
       );
     }
@@ -57,7 +61,12 @@ const styles = {
   },
   textStyle: {
     fontSize: 30,
-    color: 'white'
+    color: 'white',
+    textAlign: 'center'
+  },
+  buttonStyle: {
+    backgroundColor: '#0288D1',
+    marginTop: 15
   }
 };
 
