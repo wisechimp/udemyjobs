@@ -6,7 +6,8 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class Slides extends Component {
   renderLastSlide(index) {
-    if (index === this.props.data.length - 1) {
+    console.log(index.length);
+    if (index === this.props.slideData.length - 1) {
       return (
         <Button
           title="Onwards!"
