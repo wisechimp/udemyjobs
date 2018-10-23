@@ -11,6 +11,7 @@ class Slides extends Component {
         <Button
           title="Onwards!"
           raised
+          containerViewStyle={styles.containerStyle}
           buttonStyle={styles.buttonStyle}
           //We don't enter the () after onComplete because although it's
           //functional it would run as soon as the button was rendered!
@@ -65,7 +66,9 @@ const styles = {
     textAlign: 'center'
   },
   buttonStyle: {
-    backgroundColor: '#0288D1',
+    backgroundColor: '#0288D1'
+  },
+  containerStyle: {
     marginTop: 15
   }
 };
