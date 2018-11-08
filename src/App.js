@@ -15,25 +15,25 @@ import {
 import store from './store';
 import {
   WelcomeScreen,
-  AuthScreen,
   MapScreen,
   DeckScreen,
   ReviewScreen,
   SettingsScreen
 } from './screens';
+import AuthScreen from './screens/AuthScreen';
 
 class App extends Component {
   componentWillMount() {
-    const firebaseConfig = {
-      apiKey: API_KEY,
-      authDomain: AUTH_DOMAIN,
-      databaseURL: DATABASE_URL,
-      projectID: PROJECT_ID,
-      storageBucket: STORAGE_BUCKET,
-      messagingSenderID: MESSAGING_SENDER_ID
-    };
-    firebase.initializeApp(firebaseConfig);
-  }
+      const firebaseConfig = {
+        apiKey: API_KEY,
+        authDomain: AUTH_DOMAIN,
+        databaseURL: DATABASE_URL,
+        projectID: PROJECT_ID,
+        storageBucket: STORAGE_BUCKET,
+        messagingSenderID: MESSAGING_SENDER_ID
+      };
+      firebase.initializeApp(firebaseConfig);
+    }
 
   render() {
     const MainNavigator = createBottomTabNavigator({
