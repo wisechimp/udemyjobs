@@ -51,7 +51,12 @@ class App extends Component {
           }
         })
       }
+    }, {
+      navigationOptions: {
+        tabBarVisible: false
+      }
     });
+
     return (
       <Provider store={store}>
         <View style={styles.container}>
