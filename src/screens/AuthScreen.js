@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   View,
-  AsyncStorage
+  //AsyncStorage
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -9,8 +9,8 @@ import * as actions from '../actions';
 class AuthScreen extends Component {
   componentDidMount() {
     this.props.facebookLogin();
-    //this.onAuthComplete(this.props);
-    AsyncStorage.removeItem('fb_token');
+    this.onAuthComplete(this.props);
+    //AsyncStorage.removeItem('fb_token');
   }
 
   componentWillReceiveProps(nextProps) {
