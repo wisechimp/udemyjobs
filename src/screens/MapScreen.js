@@ -1,44 +1,54 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import MapView from 'react-native-maps';
-
-const region = {
-  latitude: 37.78825,
-  longitude: -122.4324,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421,
-};
 
 class MapScreen extends Component {
 
+  state = {
+    mapLoaded: false,
+    region: {
+      latitude: 37,
+      longitude: -122,
+      latitudeDelta: 0.09,
+      longitudeDelta: 0.04
+    }
+  }
+
+  componentDidMount() {
+    this.setState({ mapLoaded: true });
+  }
+
+  onRegionChangeComplete = (region) => {
+    this.setState({ region });
+  }
+
   render() {
+    if (!this.state.mapLoaded) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" />
+        </View>
+      );
+    }
+
     return (
       <View style={styles.container}>
         <MapView
-          region={region}
+          region={this.state.region}
           style={styles.map}
+          onRegionChangeComplete={this.onRegionChangeComplete}
         />
-      </View>
-    );
+        </View>
+      );
+    }
   }
-}
 
 const styles = {
  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    flex: 1
   },
   map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    flex: 1
   }
 };
 
