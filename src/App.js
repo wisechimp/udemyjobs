@@ -1,26 +1,40 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
+import firebase from '@firebase/app';
+import '@firebase/auth';
+import {
+  API_KEY,
+  AUTH_DOMAIN,
+  DATABASE_URL,
+  PROJECT_ID,
+  STORAGE_BUCKET,
+  MESSAGING_SENDER_ID
+} from 'react-native-dotenv';
 import store from './store';
 import {
   WelcomeScreen,
-  AuthScreen,
   MapScreen,
   DeckScreen,
   ReviewScreen,
   SettingsScreen
 } from './screens';
+import AuthScreen from './screens/AuthScreen';
 
 class App extends Component {
+  componentWillMount() {
+      const firebaseConfig = {
+        apiKey: API_KEY,
+        authDomain: AUTH_DOMAIN,
+        databaseURL: DATABASE_URL,
+        projectID: PROJECT_ID,
+        storageBucket: STORAGE_BUCKET,
+        messagingSenderID: MESSAGING_SENDER_ID
+      };
+      firebase.initializeApp(firebaseConfig);
+    }
+
   render() {
     const MainNavigator = createBottomTabNavigator({
       welcome: { screen: WelcomeScreen },
@@ -37,7 +51,12 @@ class App extends Component {
           }
         })
       }
+    }, {
+      navigationOptions: {
+        tabBarVisible: false
+      }
     });
+
     return (
       <Provider store={store}>
         <View style={styles.container}>
