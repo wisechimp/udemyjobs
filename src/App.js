@@ -15,11 +15,11 @@ import {
 import store from './store';
 import {
   WelcomeScreen,
-  MapScreen,
-  DeckScreen,
   ReviewScreen,
   SettingsScreen
 } from './screens';
+import DeckScreen from './screens/DeckScreen';
+import MapScreen from './screens/MapScreen';
 import AuthScreen from './screens/AuthScreen';
 
 class App extends Component {
