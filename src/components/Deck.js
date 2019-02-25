@@ -5,7 +5,8 @@ import {
   PanResponder,
   Dimensions,
   LayoutAnimation,
-  UIManager
+  UIManager,
+  Platform
  } from 'react-native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -13,6 +14,12 @@ const SWIPE_THRESHOLD = SCREEN_WIDTH / 4;
 const SWIPE_OUT_DURATION = 250;
 
 class Deck extends Component {
+  static defaultProps = {
+    onSwipeRight: () => {},
+    onSwipeLeft: () => {},
+    keyProp: 'id'
+  }
+
   constructor(props) {
     super(props);
 
@@ -26,9 +33,9 @@ class Deck extends Component {
       },
       onPanResponderRelease: (event, gesture) => {
         if (gesture.dx > SWIPE_THRESHOLD) {
-          this.finishSwipe(SCREEN_WIDTH);
+          this.finishSwipe('right');
         } else if (gesture.dx < -SWIPE_THRESHOLD) {
-          this.finishSwipe(-SCREEN_WIDTH);
+          this.finishSwipe('left');
         } else {
           this.resetPosition();
         }
@@ -50,37 +57,34 @@ class Deck extends Component {
     LayoutAnimation.spring();
   }
 
+  onSwipeComplete(direction) {
+    const { onSwipeLeft, onSwipeRight, data } = this.props;
+    const item = data[this.state.index];
+
+    direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item);
+    this.state.position.setValue({ x: 0, y: 0 });
+this.setState({ index: this.state.index + 1 });
+  }
+
   getCardStyle() {
     const { position } = this.state;
     const rotate = position.x.interpolate({
       inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5],
       outputRange: ['-120deg', '0deg', '120deg']
     });
+
     return {
       ...position.getLayout(),
       transform: [{ rotate }]
     };
   }
 
-  finishSwipe(swipeDirection) {
+  finishSwipe(direction) {
+    const x = direction === 'right' ? SCREEN_WIDTH : -SCREEN_WIDTH;
     Animated.timing(this.state.position, {
-      toValue: { x: swipeDirection, y: 0 },
+      toValue: { x, y: 0 },
       duration: SWIPE_OUT_DURATION
-    }).start(() => this.onSwipeComplete(swipeDirection));
-  }
-
-  onSwipeComplete(swipeDirection) {
-    //const { data } = this.props;
-    //const item = data[this.state.index];
-
-    //As usual this can be simply this.position if I go in that direction
-    this.state.position.setValue({ x: 0, y: 0 });
-
-    if (swipeDirection > 0) {
-      this.setState({ index: this.state.index + 1 });
-    } else {
-      console.log('WFT');
-    }
+    }).start(() => this.onSwipeComplete(direction));
   }
 
   resetPosition() {
@@ -94,35 +98,32 @@ class Deck extends Component {
       return this.props.renderNoMoreCards();
     }
 
-    return this.props.data.map((item, arrayIndex) => {
-      if (arrayIndex < this.state.index) {
-        return null;
+    const deck = this.props.data.map((item, i) => {
+      if (i < this.state.index) { return null; }
+
+      if (i === this.state.index) {
+        return (
+          <Animated.View
+            key={item[this.props.keyProp]}
+            style={[this.getCardStyle(), styles.cardStyle, { zIndex: 99 }]}
+            {...this.state.panResponder.panHandlers}
+          >
+            {this.props.renderCard(item)}
+          </Animated.View>
+        );
       }
 
-      if (arrayIndex === this.state.index) {
       return (
         <Animated.View
-          key={item.id}
-          style={[this.getCardStyle(), styles.cardStyle]}
-          {...this.state.panResponder.panHandlers}
+          key={item[this.props.keyProp]}
+          style={[styles.cardStyle, { top: 10 * (i - this.state.index), zIndex: -i }]}
         >
-          {this.props.renderCard(item)}
-        </Animated.View>
-      );
-    }
+            {this.props.renderCard(item)}
+          </Animated.View>
+        );
+    });
 
-      return (
-        <Animated.View
-          key={item.id}
-          style={[
-            styles.cardStyle,
-            { top: 10 * (arrayIndex - this.state.index) }
-          ]}
-        >
-          {this.props.renderCard(item)}
-        </Animated.View>
-      );
-    }).reverse();
+  return Platform.OS === 'android' ? deck : deck.reverse();
   }
 
   render() {
@@ -142,4 +143,4 @@ const styles = {
     }
 };
 
-export { Deck };
+export default Deck;
