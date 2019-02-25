@@ -7,9 +7,6 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 class MapScreen extends Component {
-  static navigationOptions = {
-    title: 'Map',
-  }
 
   state = {
     mapLoaded: false,
