@@ -13,13 +13,11 @@ import {
   MESSAGING_SENDER_ID
 } from 'react-native-dotenv';
 import store from './store';
-import {
-  WelcomeScreen,
-  ReviewScreen,
-  SettingsScreen
-} from './screens';
+import { WelcomeScreen } from './screens';
 import DeckScreen from './screens/DeckScreen';
 import MapScreen from './screens/MapScreen';
+import ReviewScreen from './screens/ReviewScreen';
+import SettingsScreen from './screens/SettingsScreen';
 import AuthScreen from './screens/AuthScreen';
 
 class App extends Component {
@@ -48,6 +46,10 @@ class App extends Component {
               review: { screen: ReviewScreen },
               settings: { screen: SettingsScreen }
             })
+          }
+        }, {
+          tabBarOptions: {
+            labelStyle: { fontSize: 12 }
           }
         })
       }
