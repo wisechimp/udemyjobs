@@ -8,7 +8,7 @@ export default function (state = INITIAL_STATE, action) {
   console.log(INITIAL_STATE);
   switch (action.type) {
     case FETCH_JOBS:
-    console.log('Action payload', action.payload);
+      console.log('Action payload', action.payload);
       return action.payload;
     default:
       return state;
