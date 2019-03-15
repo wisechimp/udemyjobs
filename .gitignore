@@ -57,3 +57,6 @@ buck-out/
 package-lock.json
 package.json
 .env
+CertificateSigningRequest.certSigningRequest
+*.p12
+*.cer
